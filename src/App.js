@@ -22,15 +22,23 @@ function App() {
     setSelectedUser(null);
   };
 
-  const handleSubmit = async (data) => {
+const handleSubmit = async (data) => {
+  // Use destructuring to pull 'id' out and keep the 'rest'
+  const { id, ...cleanData } = data; 
+
+  try {
     if (selectedUser) {
-      await updateUser(selectedUser.id, data);
+      // id goes in the URL, cleanData goes in the body
+      await updateUser(selectedUser.id, cleanData);
     } else {
-      await createUser(data);
+      await createUser(cleanData);
     }
     fetchUsers();
     handleCloseModal();
-  };
+  } catch (err) {
+    console.error("Detailed Error:", err.response?.data);
+  }
+};
 
 
 

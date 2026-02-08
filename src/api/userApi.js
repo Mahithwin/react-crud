@@ -1,13 +1,19 @@
 import axios from "axios";
-const API_URL = isProduction 
-  ? "https://69886d4c780e8375a68846cc.mockapi.io/users"  // MockAPI for live site
-  : "http://localhost:3001/users";                      // Local server for coding
 
-export const getUsers = () => axios.get(API_URL);
+// Standardize the URL - No trailing slash
+const BASE_URL = window.location.hostname === "localhost" 
+  ? "http://localhost:3001/users" 
+  : "https://69886d4c780e8375a68846cc.mockapi.io/users";
 
-export const createUser = (data) => axios.post(API_URL, data);
+export const getUsers = () => axios.get(BASE_URL);
 
-// Added the missing update function
-export const updateUser = (id, data) => axios.put(`${API_URL}/${id}`, data);
+// Create: Ensure no extra ID or metadata is being sent
+export const createUser = (data) => axios.post(BASE_URL, data);
 
-export const deleteUser = (id) => axios.delete(`${API_URL}/${id}`);
+// Update: Ensure the URL is clean
+export const updateUser = (id, data) => {
+  // MockAPI prefers PUT /users/:id
+  return axios.put(`${BASE_URL}/${id}`, data);
+};
+
+export const deleteUser = (id) => axios.delete(`${BASE_URL}/${id}`);
