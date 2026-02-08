@@ -1,6 +1,7 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:3001/users";
+const API_URL = isProduction 
+  ? "https://69886d4c780e8375a68846cc.mockapi.io/users"  // MockAPI for live site
+  : "http://localhost:3001/users";                      // Local server for coding
 
 export const getUsers = () => axios.get(API_URL);
 
